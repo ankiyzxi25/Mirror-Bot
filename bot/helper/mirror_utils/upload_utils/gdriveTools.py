@@ -329,7 +329,8 @@ class GoogleDriveHelper:
                 else:
                     buttons.buildbutton("Drive Link", durl)
                 if INDEX_URL is not None:
-                    url = requests.utils.requote_uri(f'{INDEX_URL}/{meta.get("name")}/')
+                    url_path = requests.utils.quote(f'{meta.get("name")}')
+                    url = f'{INDEX_URL}/{url_path}/'
                     if SHORTENER is not None and SHORTENER_API is not None:
                         siurl = requests.get('https://{}/api?api={}&url={}&format=text'.format(SHORTENER, SHORTENER_API, url)).text
                         buttons.buildbutton("Index Link", siurl)
@@ -356,7 +357,8 @@ class GoogleDriveHelper:
                 except TypeError:
                     pass
                 if INDEX_URL is not None:
-                    url = requests.utils.requote_uri(f'{INDEX_URL}/{file.get("name")}')
+                    url_path = requests.utils.quote(f'{file.get("name")}')
+                    url = f'{INDEX_URL}/{url_path}'
                     if SHORTENER is not None and SHORTENER_API is not None:
                         siurl = requests.get('https://{}/api?api={}&url={}&format=text'.format(SHORTENER, SHORTENER_API, url)).text
                         buttons.buildbutton("Index Link", siurl)
@@ -521,7 +523,8 @@ class GoogleDriveHelper:
                     else:
                         msg += f"<b><a href={furl}>Drive Link</a></b>"
                     if INDEX_URL is not None:
-                        url = requests.utils.requote_uri(f'{INDEX_URL}/{file.get("name")}/')
+                        url_path = requests.utils.quote(f'{file.get("name")}')
+                        url = f'{INDEX_URL}/{url_path}/'
                         if SHORTENER is not None and SHORTENER_API is not None:
                             siurl = requests.get('https://{}/api?api={}&url={}&format=text'.format(SHORTENER, SHORTENER_API, url)).text
                             msg += f' <b>| <a href="{siurl}">Index Link</a></b>'
@@ -536,7 +539,8 @@ class GoogleDriveHelper:
                     else:
                         msg += f"<b><a href={furl}>Drive Link</a></b>"
                     if INDEX_URL is not None:
-                        url = requests.utils.requote_uri(f'{INDEX_URL}/{file.get("name")}')
+                        url_path = requests.utils.quote(f'{file.get("name")}')
+                        url = f'{INDEX_URL}/{url_path}'
                         if SHORTENER is not None and SHORTENER_API is not None:
                             siurl = requests.get('https://{}/api?api={}&url={}&format=text'.format(SHORTENER, SHORTENER_API, url)).text
                             msg += f' <b>| <a href="{siurl}">Index Link</a></b>'
