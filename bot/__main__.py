@@ -1,8 +1,7 @@
 import shutil, psutil
 import signal
-import pickle
 
-from os import execl, path, remove
+from os import environ, execle, path, remove
 from sys import executable
 import time
 
@@ -54,9 +53,8 @@ def restart(update, context):
     restart_message = sendMessage("Restarting, Please wait!", context.bot, update)
     # Save restart message object in order to reply to it after restarting
     fs_utils.clean_all()
-    with open('restart.pickle', 'wb') as status:
-        pickle.dump(restart_message, status)
-    execl(executable, executable, "-m", "bot")
+    args = [executable, "-m", "bot"]
+    execle(executable, *args, environ)
 
 
 def ping(update, context):
@@ -102,12 +100,6 @@ def bot_help(update, context):
 
 def main():
     fs_utils.start_cleanup()
-    # Check if the bot is restarting
-    if path.exists('restart.pickle'):
-        with open('restart.pickle', 'rb') as status:
-            restart_message = pickle.load(status)
-        restart_message.edit_text("Restarted Successfully!")
-        remove('restart.pickle')
 
     start_handler = CommandHandler(BotCommands.StartCommand, start,
                                    filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
