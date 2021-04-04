@@ -21,7 +21,6 @@ RUN set -ex \
     && apt-get -qq -y autoremove --purge \
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
     && locale-gen \
-
     # setup mega sdk
     && MEGA_SDK_VERSION="3.8.3" \
     && git clone https://github.com/meganz/sdk.git --depth=1 -b v$MEGA_SDK_VERSION ~/sdk \
@@ -35,7 +34,6 @@ RUN set -ex \
     && cd dist/ \
     && pip3 install --no-cache-dir megasdk-$MEGA_SDK_VERSION-*.whl \
     && cd ~/sdk \
-
     # setup mirror bot
     && cd /usr/src/app \
     && chmod 777 /usr/src/app \
@@ -43,7 +41,6 @@ RUN set -ex \
     && cp netrc /root/.netrc \
     && cp extract pextract /usr/local/bin \
     && chmod +x aria.sh /usr/local/bin/extract /usr/local/bin/pextract \
-
     # cleanup env
     && apt-get -qq -y purge --autoremove \
         autoconf automake g++ gcc git libtool m4 make software-properties-common swig \
