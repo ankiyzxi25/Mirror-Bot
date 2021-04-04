@@ -3,10 +3,9 @@ from time import sleep
 
 from aria2p import API
 
-from bot import STOP_DUPLICATE_MIRROR, aria2, download_dict_lock
+from bot import aria2, download_dict_lock
 from bot.helper.ext_utils.bot_utils import *
 from bot.helper.mirror_utils.status_utils.aria_download_status import AriaDownloadStatus
-from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
 from bot.helper.telegram_helper.message_utils import *
 
 from .download_helper import DownloadHelper
@@ -20,30 +19,10 @@ class AriaDownloadHelper(DownloadHelper):
     def __onDownloadStarted(self, api, gid):
         sleep(1)
         LOGGER.info(f"onDownloadStart: {gid}")
-        dl = getDownloadByGid(gid)
+        getDownloadByGid(gid)
         download = api.get_download(gid)
         self.name = download.name
-        sname = download.name
-        if STOP_DUPLICATE_MIRROR:
-            if dl.getListener().isTar == True:
-                sname = sname + ".tar"
-            if dl.getListener().extract == True:
-                smsg = None
-            else:
-                gdrive = GoogleDriveHelper(None)
-                smsg, button = gdrive.drive_list(sname)
-            if smsg:
-                dl.getListener().onDownloadError(
-                    f"This file is already available in GDrive. Download has been stopped.\n\n"
-                )
-                sendMarkup(
-                    "Here are the search results:",
-                    dl.getListener().bot,
-                    dl.getListener().update,
-                    button,
-                )
-                aria2.remove([download])
-            return
+        download.name
         update_all_messages()
 
     def __onDownloadComplete(self, api: API, gid):
