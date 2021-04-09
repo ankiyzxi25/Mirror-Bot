@@ -653,6 +653,13 @@ class GoogleDriveHelper:
                             f"https://{SHORTENER}/api?api={SHORTENER_API}&url={url}&format=text"
                         ).text
                         msg += f' <b>| <a href="{siurl}">Index Link</a></b>'
+
+            # Excluded index link as indexes cant download or open these shortcuts
+            elif file.get("mimeType") == "application/vnd.google-apps.shortcut":
+                msg += (
+                    f"⁍ <a href='https://drive.google.com/drive/folders/{file.get('id')}'>{file.get('name')}"
+                    f"</a> (shortcut)"
+                )
             else:
                 furl = (
                     f"https://drive.google.com/uc?id={file.get('id')}&export=download"
