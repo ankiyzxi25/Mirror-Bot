@@ -22,7 +22,7 @@ RUN set -ex \
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
     && locale-gen \
     # setup mega sdk
-    && MEGA_SDK_VERSION="3.8.3" \
+    && MEGA_SDK_VERSION="3.8.4" \
     && git clone https://github.com/meganz/sdk.git --depth=1 -b v$MEGA_SDK_VERSION ~/sdk \
     && cd ~/sdk \
     && rm -rf .git \
