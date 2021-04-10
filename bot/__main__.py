@@ -1,14 +1,14 @@
+import os
 import shutil
 import signal
 import time
-from os import environ, execle
 from sys import executable
 
 import psutil
 from pyrogram import idle
 from telegram.ext import CommandHandler
 
-from bot import app, botStartTime, dispatcher, updater
+from bot import app, bot, botStartTime, dispatcher, updater
 from bot.helper.ext_utils import fs_utils
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.message_utils import (
@@ -66,11 +66,14 @@ Type /{BotCommands.HelpCommand} to get a list of available commands
 
 
 def restart(update, context):
-    sendMessage("Restarting, Please wait!", context.bot, update)
-    # Save restart message object in order to reply to it after restarting
+    restart_msg = sendMessage("Restarting, please wait!", context.bot, update)
+    # Save restart message ID and chat ID in order to edit it after restarting
+    with open(".restartmsg", "w") as f:
+        f.truncate(0)
+        f.write(f"{restart_msg.chat.id}\n{restart_msg.message_id}\n")
     fs_utils.clean_all()
     args = [executable, "-m", "bot"]
-    execle(executable, *args, environ)
+    os.execle(executable, *args, os.environ)
 
 
 def ping(update, context):
@@ -116,6 +119,12 @@ def bot_help(update, context):
 
 def main():
     fs_utils.start_cleanup()
+    # Check if the bot is restarting
+    if os.path.isfile(".restartmsg"):
+        with open(".restartmsg") as f:
+            chat_id, msg_id = map(int, f)
+        bot.edit_message_text("Restarted successfully!", chat_id, msg_id)
+        os.remove(".restartmsg")
 
     start_handler = CommandHandler(
         BotCommands.StartCommand,
