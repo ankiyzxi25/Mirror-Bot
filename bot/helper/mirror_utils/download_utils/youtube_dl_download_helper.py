@@ -3,7 +3,7 @@ import re
 import threading
 import time
 
-from yt_dlp import DownloadError, YoutubeDL
+from youtube_dl import DownloadError, YoutubeDL
 
 from bot import download_dict, download_dict_lock
 
@@ -45,7 +45,6 @@ class YoutubeDLHelper(DownloadHelper):
         self.__gid = ""
         self.opts = {
             "addmetadata": True,
-            "external_downloader": "aria2c",
             "geo_bypass": True,
             "logger": MyLogger(self),
             "nocheckcertificate": True,

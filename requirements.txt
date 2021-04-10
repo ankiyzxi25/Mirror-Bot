@@ -4,7 +4,6 @@ beautifulsoup4
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
-https://github.com/yt-dlp/yt-dlp/archive/master.zip
 lxml
 psutil
 Pyrogram
@@ -15,3 +14,4 @@ requests
 telegraph
 tenacity
 TgCrypto
+youtube_dl
