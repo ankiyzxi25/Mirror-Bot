@@ -1,11 +1,11 @@
 FROM python:3-slim-buster
 
-ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /usr/src/app
 COPY . .
 
 RUN set -ex \
     # setup env
+    && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -qq update \
     && apt-get -qq -y install software-properties-common \
     && apt-add-repository non-free \
@@ -47,8 +47,9 @@ RUN set -ex \
     && apt-get -qq -y clean \
     && rm -rf -- /var/lib/apt/lists/* /var/cache/apt/archives/* /etc/apt/sources.list.d/*
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
 
 CMD ["bash", "start.sh"]
